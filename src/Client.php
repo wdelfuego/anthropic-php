@@ -8,6 +8,7 @@ use Anthropic\Contracts\ClientContract;
 use Anthropic\Contracts\TransporterContract;
 use Anthropic\Resources\Completions;
 use Anthropic\Resources\Messages;
+use Anthropic\Resources\MessageBatches;
 
 final class Client implements ClientContract
 {
@@ -38,5 +39,10 @@ final class Client implements ClientContract
     public function messages(): Messages
     {
         return new Messages($this->transporter);
+    }
+    
+    public function messageBatches(): MessageBatches
+    {
+        return new MessageBatches($this->transporter);
     }
 }
