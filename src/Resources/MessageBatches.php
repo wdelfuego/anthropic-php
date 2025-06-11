@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Anthropic\Resources;
 
+use Anthropic\ValueObjects\Transporter\Payload;
 use Anthropic\Responses\MessageBatches\CreateResponse;
 use Anthropic\Responses\MessageBatches\RetrieveResponse;
 use Anthropic\Responses\MessageBatches\ListResponse;
@@ -55,7 +56,13 @@ final class MessageBatches
      */
     public function cancel(string $messageBatchId): CancelResponse
     {
-        $payload = Payload::cancel('messages/batches', $messageBatchId);
+        // Create a POST payload for the cancel endpoint
+        $payload = new Payload(
+            contentType: 'application/json',
+            method: 'POST',
+            uri: "messages/batches/{$messageBatchId}/cancel",
+            parameters: [],
+        );
         
         $response = $this->transporter->requestObject($payload);
         
@@ -67,7 +74,13 @@ final class MessageBatches
      */
     public function results(string $messageBatchId): ResultsResponse
     {
-        $payload = Payload::retrieve('messages/batches', $messageBatchId, '/results');
+        // Create a GET payload for the results endpoint
+        $payload = new Payload(
+            contentType: 'application/json',
+            method: 'GET',
+            uri: "messages/batches/{$messageBatchId}/results",
+            parameters: [],
+        );
         
         $response = $this->transporter->requestObject($payload);
         

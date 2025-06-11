@@ -12,7 +12,7 @@ use Anthropic\Responses\Meta\MetaInformation;
 /**
  * @implements ResponseContract<array{id: string, type: string, processing_status: string, request_counts: array, created_at: string, expires_at: string, ended_at?: string, archived_at?: string, cancel_initiated_at?: string, results_url?: string}>
  */
-final class CreateResponse implements ResponseContract
+final class CancelResponse implements ResponseContract
 {
     use ArrayAccessible;
     use HasMetaInformation;

@@ -138,6 +138,16 @@ final class Payload
         return new self($contentType, $method, $uri);
     }
 
+    public static function results(string $resource, string $id): self
+    {
+        return new self(
+            contentType: 'application/json',
+            method: 'GET', 
+            uri: $resource . '/' . $id . '/results',
+            parameters: [],
+        );
+    }
+    
     /**
      * Creates a new Psr 7 Request instance.
      */
