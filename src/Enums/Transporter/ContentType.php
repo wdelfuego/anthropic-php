@@ -10,6 +10,7 @@ namespace Anthropic\Enums\Transporter;
 enum ContentType: string
 {
     case JSON = 'application/json';
+    case JSONL = 'application/jsonl';
     case MULTIPART = 'multipart/form-data';
     case TEXT_PLAIN = 'text/plain';
 }

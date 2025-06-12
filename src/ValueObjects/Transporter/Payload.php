@@ -140,12 +140,11 @@ final class Payload
 
     public static function results(string $resource, string $id): self
     {
-        return new self(
-            contentType: 'application/json',
-            method: 'GET', 
-            uri: $resource . '/' . $id . '/results',
-            parameters: [],
-        );
+        $contentType = ContentType::JSONL;
+        $method = Method::GET;
+        $uri = ResourceUri::results($resource, $id);
+
+        return new self($contentType, $method, $uri);
     }
     
     /**

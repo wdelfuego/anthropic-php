@@ -19,11 +19,9 @@ final class ResultsResponse implements ResponseContract
 
     /**
      * @param  array<int, array{custom_id: string, result: array}>  $results
-     * @param  array<int, array{custom_id: string, result: array}>  $attributes
      */
     private function __construct(
         public readonly array $results,
-        private readonly array $attributes,
         private readonly MetaInformation $meta,
     ) {
     }
@@ -31,13 +29,12 @@ final class ResultsResponse implements ResponseContract
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array<int, array{custom_id: string, result: array}>  $attributes
+     * @param  array<int, array{custom_id: string, result: array}>  $results
      */
-    public static function from(array $attributes, MetaInformation $meta): self
+    public static function from(array $results, MetaInformation $meta): self
     {
         return new self(
-            $attributes,
-            $attributes,
+            $results,
             $meta,
         );
     }
@@ -47,6 +44,6 @@ final class ResultsResponse implements ResponseContract
      */
     public function toArray(): array
     {
-        return $this->attributes;
+        return $this->results;
     }
 }

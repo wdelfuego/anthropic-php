@@ -82,6 +82,31 @@ final class HttpTransporter implements TransporterContract
         return $contents;
     }
 
+    public function requestJsonlContent(Payload $payload): Response
+    {
+        $request = $payload->toRequest($this->baseUri, $this->headers, $this->queryParams);
+        $response = $this->sendRequest(fn (): \Psr\Http\Message\ResponseInterface => $this->client->sendRequest($request));
+        $jsonl = $response->getBody()->getContents();
+        $this->throwIfJsonError($response, $jsonl);
+        
+        $arrayOfObjects = array_reduce(explode("\n", trim($jsonl)), function($acc, $line) {
+            $trimmed = trim($line);
+            if (empty($trimmed)) return $acc;
+        
+            $decoded = json_decode($trimmed);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new UnserializableResponse(
+                    'Invalid JSON in JSONL on line: ' . $trimmed . ' - ' . json_last_error_msg()
+                );
+            }
+        
+            $acc[] = $decoded;
+            return $acc;
+        }, []);
+        
+        return Response::from($arrayOfObjects, $response->getHeaders());
+    }
+    
     /**
      * {@inheritDoc}
      */

@@ -52,38 +52,22 @@ final class MessageBatches
     }
 
     /**
-     * Cancel a message batch
-     */
-    public function cancel(string $messageBatchId): CancelResponse
-    {
-        // Create a POST payload for the cancel endpoint
-        $payload = new Payload(
-            contentType: 'application/json',
-            method: 'POST',
-            uri: "messages/batches/{$messageBatchId}/cancel",
-            parameters: [],
-        );
-        
-        $response = $this->transporter->requestObject($payload);
-        
-        return CancelResponse::from($response->data(), $response->meta());
-    }
-
-    /**
      * Get batch results
      */
     public function results(string $messageBatchId): ResultsResponse
     {
-        // Create a GET payload for the results endpoint
-        $payload = new Payload(
-            contentType: 'application/json',
-            method: 'GET',
-            uri: "messages/batches/{$messageBatchId}/results",
-            parameters: [],
-        );
+        $payload = Payload::results('messages/batches', $messageBatchId);
         
-        $response = $this->transporter->requestObject($payload);
+        $response = $this->transporter->requestJsonlContent($payload);
         
         return ResultsResponse::from($response->data(), $response->meta());
+    }
+    
+    /**
+     * Cancel a message batch
+     */
+    public function cancel(string $messageBatchId): CancelResponse
+    {
+        throw new \Exception("Canceling is not implemented yet");
     }
 }
